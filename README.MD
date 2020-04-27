@@ -1,7 +1,10 @@
 ## Python script to download all Springer books released for free during the 2020 COVID-19 quarantine
 
+<<<<<<< HEAD
 Forked from Alexandre Gandini's [original project](https://github.com/alexgand/springer_free_books) on April 27, 2020. All credit to him and his collaborators for creating this script. I've merely adapted it to my system and made a few small tweaks so that it only gets books from categories in which I'm interested and downloads to a specific folder.
 
+=======
+>>>>>>> 05f3386d37edbf56a68510b0781e0d4a7fac2354
 ### Usage
 
 Just run the script in the desired folder. It will automatically create a `/download/` subfolder and will categorize the books acording the subject.

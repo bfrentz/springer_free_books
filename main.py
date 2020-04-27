@@ -7,6 +7,7 @@ import time
 from tqdm import tqdm
 from helper import *
 
+<<<<<<< HEAD
 # Specify folder for downloading
 # if none in mind, create downloads, otherwise specify
 #folder = create_relative_path_if_not_exist('downloads')
@@ -18,6 +19,13 @@ table = 'table_' + table_url.split('/')[-1] + '.xlsx'
 table_path = os.path.join(folder, table)
 
 # Get table of books
+=======
+folder = create_relative_path_if_not_exist('downloads')
+
+table_url = 'https://resource-cms.springernature.com/springer-cms/rest/v1/content/17858272/data/v4'
+table = 'table_' + table_url.split('/')[-1] + '.xlsx'
+table_path = os.path.join(folder, table)
+>>>>>>> 05f3386d37edbf56a68510b0781e0d4a7fac2354
 if not os.path.exists(table_path):
     books = pd.read_excel(table_url)
     # Save table
@@ -25,6 +33,7 @@ if not os.path.exists(table_path):
 else:
     books = pd.read_excel(table_path, index_col=0, header=0)
 
+<<<<<<< HEAD
 # Loop over and download all books
 print()
 for url, title, author, edition, isbn, category in tqdm(books[['OpenURL', 'Book Title', 'Author', 'Edition', 'Electronic ISBN', 'English Package Name']].values):
@@ -61,3 +70,33 @@ for url, title, author, edition, isbn, category in tqdm(books[['OpenURL', 'Book 
             continue
 
 print('\nFinished downloading.')
+=======
+
+for url, title, author, edition, isbn, category in tqdm(books[['OpenURL', 'Book Title', 'Author', 'Edition', 'Electronic ISBN', 'English Package Name']].values):
+    new_folder = create_relative_path_if_not_exist(os.path.join(folder, category))
+
+    bookname = compose_bookname(title, author, edition, isbn)
+    output_file = os.path.join(new_folder, bookname + '.pdf')
+
+    # If book already downloaded, skip it
+    if os.path.exists(output_file):
+        continue
+
+    try:
+        r = requests.get(url)
+        new_url = r.url.replace('%2F','/').replace('/book/','/content/pdf/') + '.pdf'
+        download_book(new_url, output_file)
+
+        # Download EPUB version too if exists
+        new_url = r.url.replace('%2F','/').replace('/book/','/download/epub/') + '.epub'
+        output_file = os.path.join(new_folder, bookname + '.epub')
+        request = requests.get(new_url, stream = True)
+        if request.status_code == 200:
+            download_book(new_url, output_file)
+    except:
+        print('\nProblem downloading: ' + title)
+        time.sleep(30)
+        continue
+
+print('\nFinish downloading.')
+>>>>>>> 05f3386d37edbf56a68510b0781e0d4a7fac2354
